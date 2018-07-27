@@ -1,0 +1,78 @@
+---
+resource_types:
+- name: pull-request
+  type: docker-image
+  source:
+    repository: jtarchie/pr
+
+resources:
+- name: pull-request
+  type: pull-request
+  source:
+    repo: brandocorp-cookbooks/acme_base
+    base: master
+    private_key: ((github-private-key))
+
+jobs:
+- name: test
+  plan:
+  - get: pull-request
+    trigger: true
+
+  - aggregate:
+    - task: lint-test
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: brandocorp/concourse-toolchain-chefdk
+            tag: latest
+        inputs:
+        - name: pull-request
+          path: cookbooks/acme_base
+        run:
+          path: sh
+          args:
+          - -c
+          - |
+            cd cookbooks/acme_base
+            chef exec rubocop --lint
+
+    - task: unit-test
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: brandocorp/concourse-toolchain-chefdk
+            tag: latest
+        inputs:
+        - name: pull-request
+          path: cookbooks/acme_base
+        run:
+          path: sh
+          args:
+          - -c
+          - |
+            cd cookbooks/acme_base
+            chef exec rspec --format documentation --color
+
+  - task: func-test
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: brandocorp/concourse-toolchain-chefdk
+          tag: latest
+      inputs:
+      - name: pull-request
+        path: cookbooks/acme_base
+      run:
+        path: sh
+        args:
+        - -c
+        - |
+          cd cookbooks/acme_base
+          chef exec kitchen test

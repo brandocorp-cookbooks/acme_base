@@ -19,6 +19,11 @@ jobs:
   - get: pull-request
     trigger: true
 
+  - put: pull-request
+    params:
+      path: pull-request
+      status: pending
+
   - aggregate:
     - task: lint-test
       config:
@@ -26,7 +31,7 @@ jobs:
         image_resource:
           type: docker-image
           source:
-            repository: brandocorp/concourse-toolchain-chefdk
+            repository: brandocorp/concourse-chefdk-toolchain
             tag: latest
         inputs:
         - name: pull-request
@@ -45,7 +50,7 @@ jobs:
         image_resource:
           type: docker-image
           source:
-            repository: brandocorp/concourse-toolchain-chefdk
+            repository: brandocorp/concourse-chefdk-toolchain
             tag: latest
         inputs:
         - name: pull-request
@@ -64,7 +69,7 @@ jobs:
       image_resource:
         type: docker-image
         source:
-          repository: brandocorp/concourse-toolchain-chefdk
+          repository: brandocorp/concourse-chefdk-toolchain
           tag: latest
       inputs:
       - name: pull-request
@@ -75,4 +80,4 @@ jobs:
         - -c
         - |
           cd cookbooks/acme_base
-          chef exec kitchen test
+          chef exec kitchen sink

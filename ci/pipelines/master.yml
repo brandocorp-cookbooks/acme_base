@@ -1,0 +1,140 @@
+---
+resource_types:
+- name: pull-request
+  type: docker-image
+  source:
+    repository: jtarchie/pr
+
+resources:
+- name: pull-request
+  type: pull-request
+  source:
+    access_token: ((github-access-token))
+    uri: https://github.com/brandocorp-cookbooks/acme_base.git
+    repo: brandocorp-cookbooks/acme_base
+    base: master
+
+- name: version
+  type: semver
+  source:
+    driver: git
+    initial_version: 0.1.0
+    uri: https://github.com/brandocorp-cookbooks/acme_base.git
+    branch: master
+    file: version
+    username: ((github-username))
+    password: ((github-access-token))
+
+jobs:
+- name: test
+  plan:
+  - get: pull-request
+    trigger: true
+
+  - put: pull-request
+    params:
+      path: pull-request
+      status: pending
+
+  - aggregate:
+    - task: lint-test
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: brandocorp/concourse-chefdk-toolchain
+            tag: latest
+        inputs:
+        - name: pull-request
+          path: cookbooks/acme_base
+        run:
+          path: sh
+          args:
+          - -c
+          - |
+            cd cookbooks/acme_base
+            chef exec rubocop --lint
+
+    - task: unit-test
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: brandocorp/concourse-chefdk-toolchain
+            tag: latest
+        inputs:
+        - name: pull-request
+          path: cookbooks/acme_base
+        run:
+          path: sh
+          args:
+          - -c
+          - |
+            cd cookbooks/acme_base
+            chef exec rspec --format documentation --color
+
+  - task: func-test
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: brandocorp/concourse-chefdk-toolchain
+          tag: latest
+      inputs:
+      - name: pull-request
+        path: cookbooks/acme_base
+      run:
+        path: sh
+        args:
+        - -c
+        - |
+          cd cookbooks/acme_base
+          chef exec kitchen sink
+    on_success:
+      put: pull-request
+      params:
+        path: pull-request
+        status: success
+    on_failure:
+      put: pull-request
+      params:
+        path: pull-request
+        status: failure
+
+- name: patch-release
+  plan:
+  - get: pull-request
+    passed: [test]
+  - task: changelog
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: brandocorp/concourse-chefdk-toolchain
+          tag: latest
+      inputs:
+      - name: pull-request
+        path: cookbooks/acme_base
+      run:
+        path: sh
+        args:
+        - -c
+        - |
+          cd cookbooks/acme_base
+          chef gem install github_changelog_generator
+          chef exec github_changelog_generator
+          git add CHANGELOG.md
+          git commit -m "[CI] Updating changelog"
+  - put: version
+    params:
+      bump: patch
+  - put: pull-request
+    params:
+      path: master-pr
+      status: success
+      merge:
+        method: merge

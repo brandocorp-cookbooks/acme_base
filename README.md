@@ -1,4 +1,3 @@
 # acme_base
 
-TODO: Enter the cookbook description here.
-
+Acme Corporation's base cookbook.

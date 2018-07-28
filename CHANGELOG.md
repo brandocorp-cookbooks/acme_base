@@ -1,12 +1,16 @@
 # Change Log
 
-## [Unreleased](https://github.com/brandocorp-cookbooks/acme_base/tree/HEAD)
-
-[Full Changelog](https://github.com/brandocorp-cookbooks/acme_base/compare/v0.1.2...HEAD)
+## [v0.1.3](https://github.com/brandocorp-cookbooks/acme_base/tree/v0.1.3) (2018-07-28)
+[Full Changelog](https://github.com/brandocorp-cookbooks/acme_base/compare/v0.1.2...v0.1.3)
 
 **Closed issues:**
 
+- README needs to be updated [\#7](https://github.com/brandocorp-cookbooks/acme_base/issues/7)
 - acme user should be an admin [\#5](https://github.com/brandocorp-cookbooks/acme_base/issues/5)
+
+**Merged pull requests:**
+
+- Add description to README [\#8](https://github.com/brandocorp-cookbooks/acme_base/pull/8) ([brandocorp](https://github.com/brandocorp))
 
 ## [v0.1.2](https://github.com/brandocorp-cookbooks/acme_base/tree/v0.1.2) (2018-07-28)
 [Full Changelog](https://github.com/brandocorp-cookbooks/acme_base/compare/v0.1.1...v0.1.2)

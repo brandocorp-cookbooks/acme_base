@@ -1,5 +1,20 @@
 # Change Log
 
+## [Unreleased](https://github.com/brandocorp-cookbooks/acme_base/tree/HEAD)
+
+[Full Changelog](https://github.com/brandocorp-cookbooks/acme_base/compare/v0.1.2...HEAD)
+
+**Closed issues:**
+
+- acme user should be an admin [\#5](https://github.com/brandocorp-cookbooks/acme_base/issues/5)
+
+## [v0.1.2](https://github.com/brandocorp-cookbooks/acme_base/tree/v0.1.2) (2018-07-28)
+[Full Changelog](https://github.com/brandocorp-cookbooks/acme_base/compare/v0.1.1...v0.1.2)
+
+**Merged pull requests:**
+
+- Add sudo permissions for acme user [\#6](https://github.com/brandocorp-cookbooks/acme_base/pull/6) ([brandocorp](https://github.com/brandocorp))
+
 ## [v0.1.1](https://github.com/brandocorp-cookbooks/acme_base/tree/v0.1.1) (2018-07-28)
 [Full Changelog](https://github.com/brandocorp-cookbooks/acme_base/compare/v0.1.0...v0.1.1)
 

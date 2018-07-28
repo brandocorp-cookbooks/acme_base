@@ -29,3 +29,8 @@ user 'acme' do
   shell '/bin/bash'
   system true
 end
+
+sudo 'acme' do
+  user 'acme'
+  nopasswd true
+end

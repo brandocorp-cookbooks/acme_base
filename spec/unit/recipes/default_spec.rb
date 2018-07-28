@@ -38,6 +38,10 @@ describe 'acme_base::default' do
     it 'adds the acme user' do
       expect(chef_run).to create_user('acme')
     end
+
+    it 'gives the acme user sudo access' do
+      expect(chef_run).to create_sudo('acme')
+    end
   end
 
   context 'When all attributes are default, on CentOS 7.4.1708' do

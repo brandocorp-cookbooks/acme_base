@@ -35,8 +35,8 @@ describe 'acme_base::default' do
       runner.converge(described_recipe)
     end
 
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
+    it 'adds the acme user' do
+      expect(chef_run).to create_user('acme')
     end
   end
 
@@ -48,8 +48,8 @@ describe 'acme_base::default' do
       runner.converge(described_recipe)
     end
 
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
+    it 'adds the acme user' do
+      expect(chef_run).to create_user('acme')
     end
   end
 end

@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.1.4](https://github.com/brandocorp-cookbooks/acme_base/tree/v0.1.4) (2018-07-29)
+[Full Changelog](https://github.com/brandocorp-cookbooks/acme_base/compare/v0.1.3...v0.1.4)
+
+**Merged pull requests:**
+
+- Add test-kitchen config for digitalocean [\#9](https://github.com/brandocorp-cookbooks/acme_base/pull/9) ([brandocorp](https://github.com/brandocorp))
+
 ## [v0.1.3](https://github.com/brandocorp-cookbooks/acme_base/tree/v0.1.3) (2018-07-28)
 [Full Changelog](https://github.com/brandocorp-cookbooks/acme_base/compare/v0.1.2...v0.1.3)
 
